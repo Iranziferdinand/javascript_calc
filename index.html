@@ -1,203 +1,629 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>JavaScript Calculator</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FerdixNetwork Blog - Visual Gallery</title>
     <style>
-        /* Your original styles - KEPT EXACTLY THE SAME */
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f2f2f2;
-        }
-
-        .calculator {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px gray;
-            width: 300px;
-        }
-
-        input {
-            width: 100%;
-            height: 50px;
-            font-size: 25px;
-            margin-bottom: 10px;
-            text-align: right;
-        }
-
-        button {
-            width: 60px;
-            height: 50px;
-            margin: 5px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .equal {
-            background: green;
-            color: white;
-        }
-
-        .clear {
-            background: red;
-            color: white;
-        }
-
-        /* NEW: Added styles for developer info and layout ONLY */
-        .developer-info {
-            margin-top: 15px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-            font-size: 13px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand-icon { font-size: 24px; }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-menu a:hover { opacity: 0.8; }
+        .nav-menu a.active { border-bottom: 2px solid white; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 20px 80px;
             text-align: center;
         }
 
-        .developer-info strong {
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .highlight { color: #fbd38d; }
+
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: white;
             color: #764ba2;
-            font-size: 14px;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .how-it-works {
-            margin-top: 10px;
-            padding: 10px 12px;
-            background: #f0f4ff;
-            border-left: 3px solid #667eea;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #444;
-            line-height: 1.6;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .how-it-works h4 {
-            margin: 0 0 5px 0;
+        /* ===== GALLERY SECTION ===== */
+        .gallery-section {
+            padding: 60px 0;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
             color: #2d3748;
-            font-size: 13px;
+            margin-bottom: 10px;
         }
 
-        .how-it-works code {
-            background: #e2e8f0;
-            padding: 1px 4px;
-            border-radius: 3px;
-            font-size: 11px;
+        .section-header p {
+            color: #718096;
+            font-size: 18px;
         }
 
-        .ferdix-badge {
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        /* ===== GALLERY ITEM ===== */
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            background: #f0f0f0;
+        }
+
+        .image-overlay {
+            padding: 20px;
+            background: white;
+        }
+
+        .image-overlay h3 {
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .image-overlay p {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .image-tag {
             display: inline-block;
             background: #667eea;
             color: white;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-top: 3px;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about-section {
+            padding: 60px 0;
+            background: #f7fafc;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-text h2 {
+            font-size: 36px;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: #4a5568;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .stat-item { text-align: center; }
+
+        .stat-number {
+            display: block;
+            font-size: 36px;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            padding: 60px 0;
+            background: white;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-size: 36px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .contact-section p {
+            color: #718096;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f7fafc;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #2d3748;
+        }
+
+        .contact-icon { font-size: 20px; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer strong { color: #667eea; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                flex-direction: column;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .nav-menu.active { display: flex; }
+            .hamburger { display: flex; }
+
+            .hero-content h1 { font-size: 32px; }
+            .hero-content p { font-size: 16px; }
+
+            .gallery-grid { grid-template-columns: 1fr; }
+
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-item {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
-
 </head>
-
 <body>
 
-<div class="calculator">
-
-    <!-- YOUR ORIGINAL CALCULATOR - COMPLETELY UNCHANGED -->
-    <input type="text" id="display" readonly>
-
-    <br>
-
-    <button onclick="clearDisplay()" class="clear">C</button>
-    <button onclick="deleteNumber()">DEL</button>
-    <button onclick="add('/')">/</button>
-    <button onclick="add('*')">*</button>
-
-    <br>
-
-    <button onclick="add('7')">7</button>
-    <button onclick="add('8')">8</button>
-    <button onclick="add('9')">9</button>
-    <button onclick="add('-')">-</button>
-    
-
-    <br>
-
-    <button onclick="add('4')">4</button>
-    <button onclick="add('5')">5</button>
-    <button onclick="add('6')">6</button>
-    <button onclick="add('+')">+</button>
-
-    <br>
-
-    <button onclick="add('1')">1</button>
-    <button onclick="add('2')">2</button>
-    <button onclick="add('3')">3</button>
-    <button onclick="calculate()" class="equal">=</button>
-
-    <br>
-
-    <button onclick="add('0')">0</button>
-    <button onclick="add('.')">.</button>
-
-    <!-- NEW: Developer Information Section (ADDED ONLY) -->
-    <div class="developer-info">
-        <strong>FerdixNetwork</strong> <span class="ferdix-badge">Developer</span>
-        <div style="margin-top: 3px; font-size: 11px; color: #666;">
-            Built with ❤️ | Version 1.0
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon">📸</span>
+                <span class="brand-text">FerdixNetwork Blog</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- NEW: How This Calculator Works (ADDED ONLY) -->
-    <div class="how-it-works">
-        <h4>📘 How It Works</h4>
-        <div>
-            <strong>1.</strong> Click buttons to build your expression &nbsp;|&nbsp; 
-            <strong>2.</strong> Use +, -, *, / for operations<br>
-            <strong>3.</strong> Press <strong>=</strong> to calculate &nbsp;|&nbsp; 
-            <strong>4.</strong> <strong>C</strong> clears all &nbsp;|&nbsp; 
-            <strong>DEL</strong> deletes last digit<br>
-            <span style="color: #667eea; font-size: 11px;">
-                ⚡ Uses JavaScript's <code>eval()</code> function for real-time calculation
-            </span>
+    <!-- ===== HERO ===== -->
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span class="highlight">FerdixNetwork</span> Blog</h1>
+            <p>Explore our visual stories through captivating images and detailed explanations</p>
+            <a href="#gallery" class="btn-primary">View Gallery</a>
         </div>
-    </div>
+    </header>
 
-</div>
+    <!-- ===== GALLERY ===== -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>📷 Image Gallery</h2>
+                <p>Each image tells a unique story. Hover to see the explanation.</p>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Dynamically loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
 
-<!-- YOUR ORIGINAL JAVASCRIPT - COMPLETELY UNCHANGED -->
-<script>
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About This Blog</h2>
+                    <p>Welcome to FerdixNetwork, where we share visual stories through curated images and thoughtful explanations. Our goal is to provide a rich, engaging experience that combines stunning visuals with informative content.</p>
+                    <p>Each image in our gallery is carefully selected and accompanied by a detailed description to help you understand the context, significance, and story behind it.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="imageCount">0</span>
+                            <span class="stat-label">Images</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Original Content</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">🌟</span>
+                            <span class="stat-label">Curated Stories</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-function add(value){
-    document.getElementById("display").value += value;
-}
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>📬 Get in Touch</h2>
+            <p>Have questions or want to contribute? Reach out to us!</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <span>ferdixnetwork@example.com</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🐦</span>
+                    <span>@ferdixnetwork</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">💻</span>
+                    <span>github.com/ferdixnetwork</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-function clearDisplay(){
-    document.getElementById("display").value = "";
-}
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 <strong>FerdixNetwork</strong>. Built with ❤️ | All rights reserved</p>
+        </div>
+    </footer>
 
-function deleteNumber(){
-    let display = document.getElementById("display");
-    display.value = display.value.slice(0,-1);
-}
+    <script>
+        // ===== GALLERY DATA =====
+        // Images are named 1.jpeg, 2.jpeg, 3.jpeg ... up to 10.jpeg
+        // All images must be in the "sample" folder
+        const galleryData = [
+            {
+                id: 1,
+                title: "Mountain Sunset",
+                description: "A breathtaking view of the mountains during sunset, with vibrant orange and purple hues painting the sky. This image captures the serenity of nature at its finest moment of transition from day to night.",
+                image: "sample/1.jpeg",
+                tag: "Nature"
+            },
+            {
+                id: 2,
+                title: "City Lights",
+                description: "The bustling city comes alive at night with thousands of lights illuminating the skyline. This long-exposure photograph captures the energy and dynamism of modern urban life.",
+                image: "sample/2.jpeg",
+                tag: "Urban"
+            },
+            {
+                id: 3,
+                title: "Ocean Waves",
+                description: "Powerful waves crashing against the rocky shore create a mesmerizing display of nature's force. The contrast between the blue water and white foam showcases the beauty of the ocean.",
+                image: "sample/3.jpeg",
+                tag: "Nature"
+            },
+            {
+                id: 4,
+                title: "Forest Path",
+                description: "A winding path through a dense forest invites exploration and adventure. The interplay of light and shadow through the canopy creates a magical atmosphere perfect for hiking.",
+                image: "sample/4.jpeg",
+                tag: "Adventure"
+            },
+            {
+                id: 5,
+                title: "Desert Dunes",
+                description: "Endless sand dunes stretch across the horizon, shaped by winds into smooth, flowing curves. This image captures the solitude and timeless beauty of the desert landscape.",
+                image: "sample/5.jpeg",
+                tag: "Nature"
+            },
+            {
+                id: 6,
+                title: "Aurora Borealis",
+                description: "The Northern Lights dance across the night sky in vibrant shades of green, purple, and blue. This spectacular natural phenomenon is a once-in-a-lifetime experience for many.",
+                image: "sample/6.jpeg",
+                tag: "Nature"
+            },
+            {
+                id: 7,
+                title: "Technology Innovation",
+                description: "Modern technology and innovation are transforming our world at an unprecedented pace. This image represents the intersection of human creativity and technological advancement.",
+                image: "sample/7.jpeg",
+                tag: "Technology"
+            },
+            {
+                id: 8,
+                title: "Cultural Heritage",
+                description: "Preserving cultural heritage is essential for understanding our past and shaping our future. This image showcases the rich traditions and craftsmanship of ancient civilizations.",
+                image: "sample/8.jpeg",
+                tag: "Culture"
+            },
+            {
+                id: 9,
+                title: "Wildlife Conservation",
+                description: "Protecting wildlife and their habitats is crucial for maintaining biodiversity. This image highlights the beauty and importance of conservation efforts around the world.",
+                image: "sample/9.jpeg",
+                tag: "Conservation"
+            },
+            {
+                id: 10,
+                title: "Starry Night Sky",
+                description: "The vast expanse of the night sky filled with countless stars creates a humbling reminder of our place in the universe. This long-exposure photograph captures the beauty of the cosmos.",
+                image: "sample/10.jpeg",
+                tag: "Nature"
+            }
+        ];
 
-function calculate(){
+        // ===== RENDER GALLERY =====
+        function renderGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            if (!galleryGrid) return;
 
-    let result = document.getElementById("display").value;
+            galleryGrid.innerHTML = '';
 
-    try{
-        document.getElementById("display").value = eval(result);
-    }
-    catch{
-        document.getElementById("display").value = "Error";
-    }
+            galleryData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'250\'%3E%3Crect width=\'400\' height=\'250\' fill=\'%23e2e8f0\'/%3E%3Ctext x=\'200\' y=\'125\' font-family=\'Arial\' font-size=\'16\' fill=\'%234a5568\' text-anchor=\'middle\'%3E📷 Image ${item.id} Not Found%3C/text%3E%3C/svg%3E'">
+                    <div class="image-overlay">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <span class="image-tag">${item.tag}</span>
+                    </div>
+                `;
+                galleryGrid.appendChild(div);
+            });
 
-}
+            // Update image count
+            const countEl = document.getElementById('imageCount');
+            if (countEl) countEl.textContent = galleryData.length;
+        }
 
-</script>
+        // ===== NAVIGATION =====
+        function setupNavigation() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
 
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
+
+            // Close menu on link click
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navMenu) navMenu.classList.remove('active');
+                });
+            });
+
+            // Smooth scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        const navHeight = document.querySelector('.navbar').offsetHeight;
+                        const pos = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                        window.scrollTo({ top: pos, behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        // ===== SCROLL SPY =====
+        function setupScrollSpy() {
+            const sections = document.querySelectorAll('section, header');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                const scrollPos = window.pageYOffset + 100;
+
+                sections.forEach(section => {
+                    const top = section.offsetTop;
+                    const height = section.offsetHeight;
+                    if (scrollPos >= top && scrollPos < top + height) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGallery();
+            setupNavigation();
+            setupScrollSpy();
+            console.log('📸 FerdixNetwork Blog loaded successfully!');
+            console.log(`🖼️ Displaying ${galleryData.length} images from the sample folder.`);
+        });
+    </script>
 </body>
 </html>
