@@ -1,50 +1,177 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JavaScript Calculator</title>
+    <title>JavaScript Calculator - FerdixNetwork</title>
 
     <style>
         body {
-            font-family: Arial;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: #f2f2f2;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .calculator-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
         }
 
         .calculator {
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px gray;
-            width: 300px;
+            width: 100%;
+        }
+
+        .brand {
+            text-align: center;
+            color: #764ba2;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .brand span {
+            color: #667eea;
         }
 
         input {
             width: 100%;
-            height: 50px;
-            font-size: 25px;
-            margin-bottom: 10px;
+            height: 60px;
+            font-size: 28px;
+            margin-bottom: 15px;
             text-align: right;
+            padding: 0 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
 
         button {
-            width: 60px;
-            height: 50px;
-            margin: 5px;
+            height: 55px;
             font-size: 20px;
             cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background: #f0f0f0;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .operator {
+            background: #e3e7f1;
+            color: #4a5568;
+        }
+
+        .operator:hover {
+            background: #d1d7e6;
         }
 
         .equal {
-            background: green;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
         }
 
+        .equal:hover {
+            background: linear-gradient(135deg, #5a6fd6, #6a429a);
+        }
+
         .clear {
-            background: red;
+            background: #fc8181;
             color: white;
+        }
+
+        .clear:hover {
+            background: #f56565;
+        }
+
+        .delete {
+            background: #fbd38d;
+            color: #744210;
+        }
+
+        .delete:hover {
+            background: #f6ad55;
+        }
+
+        .info-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-section h3 {
+            margin: 0 0 8px 0;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .info-section p {
+            margin: 4px 0;
+            font-size: 12px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .developer {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 2px solid #e2e8f0;
+            color: #4a5568;
+            font-size: 13px;
+        }
+
+        .developer strong {
+            color: #764ba2;
+            font-size: 15px;
+        }
+
+        .developer .heart {
+            color: #fc8181;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 5px;
         }
     </style>
 
@@ -52,51 +179,73 @@
 
 <body>
 
-<div class="calculator">
+<div class="calculator-wrapper">
 
-    <input type="text" id="display" readonly>
+    <div class="brand">
+        ⚡ <span>FERDIX</span>NETWORK ⚡
+    </div>
 
-    <br>
+    <div class="calculator">
 
-    <button onclick="clearDisplay()" class="clear">C</button>
-    <button onclick="deleteNumber()">DEL</button>
-    <button onclick="add('/')">/</button>
-    <button onclick="add('*')">*</button>
+        <input type="text" id="display" readonly placeholder="0">
 
-    <br>
+        <div class="button-grid">
+            <button onclick="clearDisplay()" class="clear">C</button>
+            <button onclick="deleteNumber()" class="delete">⌫</button>
+            <button onclick="add('/')" class="operator">÷</button>
+            <button onclick="add('*')" class="operator">×</button>
 
-    <button onclick="add('7')">7</button>
-    <button onclick="add('8')">8</button>
-    <button onclick="add('9')">9</button>
-    <button onclick="add('-')">-</button>
-    
+            <button onclick="add('7')">7</button>
+            <button onclick="add('8')">8</button>
+            <button onclick="add('9')">9</button>
+            <button onclick="add('-')" class="operator">−</button>
 
-    <br>
+            <button onclick="add('4')">4</button>
+            <button onclick="add('5')">5</button>
+            <button onclick="add('6')">6</button>
+            <button onclick="add('+')" class="operator">+</button>
 
-    <button onclick="add('4')">4</button>
-    <button onclick="add('5')">5</button>
-    <button onclick="add('6')">6</button>
-    <button onclick="add('+')">+</button>
+            <button onclick="add('1')">1</button>
+            <button onclick="add('2')">2</button>
+            <button onclick="add('3')">3</button>
+            <button onclick="calculate()" class="equal">=</button>
 
-    <br>
+            <button onclick="add('0')" style="grid-column: span 2;">0</button>
+            <button onclick="add('.')">.</button>
+        </div>
 
-    <button onclick="add('1')">1</button>
-    <button onclick="add('2')">2</button>
-    <button onclick="add('3')">3</button>
-    <button onclick="calculate()" class="equal">=</button>
+        <div class="info-section">
+            <h3>📘 How This Calculator Works</h3>
+            <p>
+                <strong>1. Input:</strong> Click number buttons to build your expression.<br>
+                <strong>2. Operations:</strong> Use +, −, ×, ÷ for calculations.<br>
+                <strong>3. Calculate:</strong> Press <strong>=</strong> to evaluate the expression.<br>
+                <strong>4. Clear:</strong> <strong>C</strong> resets everything; <strong>⌫</strong> deletes last digit.<br>
+                <strong>💡 Tip:</strong> Uses JavaScript's <code>eval()</code> function to evaluate mathematical expressions in real-time.
+            </p>
+        </div>
 
-    <br>
+        <div class="developer">
+            Developed with <span class="heart">❤</span> by <strong>FerdixNetwork</strong>
+            <br>
+            <span class="badge">v1.0</span>
+        </div>
 
-    <button onclick="add('0')">0</button>
-    <button onclick="add('.')">.</button>
+    </div>
 
 </div>
-
 
 <script>
 
 function add(value){
-    document.getElementById("display").value += value;
+    let display = document.getElementById("display");
+    // Prevent multiple operators in a row
+    let lastChar = display.value.slice(-1);
+    if (['+', '-', '*', '/'].includes(lastChar) && ['+', '-', '*', '/'].includes(value)) {
+        display.value = display.value.slice(0, -1) + value;
+    } else {
+        display.value += value;
+    }
 }
 
 function clearDisplay(){
@@ -105,24 +254,43 @@ function clearDisplay(){
 
 function deleteNumber(){
     let display = document.getElementById("display");
-    display.value = display.value.slice(0,-1);
+    display.value = display.value.slice(0, -1);
 }
 
 function calculate(){
+    let display = document.getElementById("display");
+    let expression = display.value;
 
-    let result = document.getElementById("display").value;
+    // Replace display symbols with JavaScript operators
+    expression = expression.replace(/×/g, '*').replace(/÷/g, '/');
 
-    try{
-        document.getElementById("display").value = eval(result);
+    try {
+        let result = eval(expression);
+        // Handle division by zero
+        if (!isFinite(result)) {
+            display.value = "Cannot divide by zero";
+        } else {
+            display.value = result;
+        }
+    } catch {
+        display.value = "Error";
     }
-    catch{
-        document.getElementById("display").value = "Error";
-    }
-
 }
 
+// Keyboard support
+document.addEventListener('keydown', function(e) {
+    const key = e.key;
+    if (key >= '0' && key <= '9') add(key);
+    else if (key === '.') add('.');
+    else if (key === '+') add('+');
+    else if (key === '-') add('-');
+    else if (key === '*') add('*');
+    else if (key === '/') add('/');
+    else if (key === 'Enter' || key === '=') calculate();
+    else if (key === 'Backspace') deleteNumber();
+    else if (key === 'Escape' || key === 'c') clearDisplay();
+});
 </script>
-
 
 </body>
 </html>
